@@ -155,23 +155,24 @@ public class Shop
 	 */
 	public int getCostOfItem(String item)
 	{
-		if (item.equals("Water") || item.equals("water"))
+		// lol nice one
+		if (item.equals("Water")) {
 		{
 			return WATER_COST;
 		}
-		else if (item.equals("Rope") || item.equals("rope"))
+		else if (item.equals("Rope")) {
 		{
 			return ROPE_COST;
 		}
-		else if (item.equals("Machete") || item.equals("machete"))
+		else if (item.equals("Machete")) {
 		{
 			return MACHETE_COST;
 		}    
-		else if (item.equals("Horse") || item.equals("horse"))
+		else if (item.equals("Horse")) {
 		{
 			return HORSE_COST;
 		}
-		else if (item.equals("Boat") || item.equals("boat"))
+		else if (item.equals("Boat")) {
 		{
 			return BOAT_COST;
 		}
