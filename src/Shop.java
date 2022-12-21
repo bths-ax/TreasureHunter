@@ -157,23 +157,18 @@ public class Shop
 	{
 		// lol nice one
 		if (item.equals("Water")) {
-		{
 			return WATER_COST;
 		}
 		else if (item.equals("Rope")) {
-		{
 			return ROPE_COST;
 		}
 		else if (item.equals("Machete")) {
-		{
 			return MACHETE_COST;
 		}    
 		else if (item.equals("Horse")) {
-		{
 			return HORSE_COST;
 		}
 		else if (item.equals("Boat")) {
-		{
 			return BOAT_COST;
 		}
 		else
