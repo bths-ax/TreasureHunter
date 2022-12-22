@@ -206,9 +206,9 @@ public class Shop
 	 */
 	public int getBuyBackCost(String item)
 	{
-		int cost = (int)(getCostOfItem(item) * markdown);
-		if (customer.isCheating() && cost != 0)
+		if (customer.isCheating() && getCostOfItem(item) != 0)
 			return 1;
+		int cost = (int)(getCostOfItem(item) * markdown);
 		return cost;
 	}
 }
