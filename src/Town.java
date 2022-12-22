@@ -5,9 +5,9 @@
  */
 public class Town
 {
-	// Keeps track of the treasures already generated
-	private static final String TREASURES_DELIMITER = ";";
-	private static String existingTreasures = "";
+	public static final String UNIQUE_TREASURE_1 = "GoldThing";
+	public static final String UNIQUE_TREASURE_2 = "DiamondThing";
+	public static final String UNIQUE_TREASURE_3 = "PlatinumThing";
 
 	//instance variables
 	private Hunter hunter;
@@ -29,6 +29,7 @@ public class Town
 		this.shop = shop;
 		this.terrain = getNewTerrain();
 		this.treasure = getNewTreasure();
+		this.treasureFound = false;
 
 		// the hunter gets set using the hunterArrives method, which
 		// gets called from a client class
@@ -138,17 +139,22 @@ public class Town
 	 * The chances of finding a treasure are always 50% regardless of the toughness of the town
 	 */
 	public void huntForTreasure() {
+		if (treasureFound) {
+			System.out.println("You already found the treasure in this town, so there is no need to continue hunting here");
+			System.out.println("It might be time to move to a new town");
+			return;
+		}
+
 		if (Math.random() >= 0.5) { // Treasure found
 			System.out.println("You found a " + treasure + "!");
 
-			// Cannot find the same treasure twice
-			if (treasureFound) {
+			if (hunter.hasItemInKit(treasure)) {
+				// Hunter already found this treasure; cannot find same one twice
 				System.out.println("Too bad you already had one though, and because you are suuuch a good person you put it back down and left it for someone else to find.");
-				return;
+			} else {
+				hunter.addItem(treasure);
+				treasureFound = true;
 			}
-
-			hunter.addItem(treasure);
-			treasureFound = true;
 		} else { // Nothing found
 			System.out.println("You couldn't find any treasure.");
 		}
@@ -194,29 +200,14 @@ public class Town
 	 * @return Name of the treasure
 	 */
 	private String getNewTreasure() {
-		String treasure = "";
-
-		while (existingTreasures.indexOf(treasure) != -1) {
-			int rnd = (int)(Math.random() * 6);
-			if (rnd == 0) {
-				treasure = "CopperThing";
-			} else if (rnd == 1) {
-				treasure = "BronzeThing";
-			} else if (rnd == 2) {
-				treasure = "GoldThing";
-			} else if (rnd == 3) {
-				treasure = "DiamondThing";
-			} else if (rnd == 4) {
-				treasure = "PlatinumThing";
-			} else if (rnd == 5) {
-				treasure = "UraniumThing"; // lol
-			}
+		int rnd = (int)(Math.random() * 3);
+		if (rnd == 0) {
+			return UNIQUE_TREASURE_1;
+		} else if (rnd == 1) {
+			return UNIQUE_TREASURE_2;
+		} else {
+			return UNIQUE_TREASURE_3;
 		}
-
-		existingTreasures += treasure;
-		existingTreasures += TREASURES_DELIMITER;
-
-		return treasure;
 	}
 
 	/**

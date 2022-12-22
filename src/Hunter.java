@@ -156,6 +156,17 @@ public class Hunter
 		return false;
 	}
 
+	/**
+	  * Checks the kit for the 3 unique treasures
+	  * @return true if the hunter has collected all 3 unique treasures
+	  */
+	public boolean hasAllTreasures() {
+		return
+			hasItemInKit(Town.UNIQUE_TREASURE_1) &&
+			hasItemInKit(Town.UNIQUE_TREASURE_2) &&
+			hasItemInKit(Town.UNIQUE_TREASURE_3);
+	}
+
 	/** Returns a printable representation of the inventory, which
 	 *  is a list of the items in kit, with the KIT_DELIMITER replaced with a space
 	 *

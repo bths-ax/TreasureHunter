@@ -13,6 +13,7 @@ public class TreasureHunter
 	private Town currentTown;
 	private Hunter hunter;
 	private boolean hardMode;
+	private boolean gameEnded;
 
 	//Constructor
 	/**
@@ -24,6 +25,7 @@ public class TreasureHunter
 		currentTown = null;
 		hunter = null;
 		hardMode = false;
+		gameEnded = false;
 	}
 
 	// starts the game; this is the only public method
@@ -100,7 +102,7 @@ public class TreasureHunter
 		Scanner scanner = new Scanner(System.in);
 		String choice = "";
 
-		while (!(choice.equals("X") || choice.equals("x")))
+		while (!gameEnded)
 		{
 			System.out.println();
 			System.out.println(currentTown.getLatestNews());
@@ -142,15 +144,28 @@ public class TreasureHunter
 		else if (choice.equals("L") || choice.equals("l"))
 		{
 			currentTown.lookForTrouble();
+			if (hunter.getGold() <= 0) {
+				System.out.println();
+				System.out.println("You lost all your gold!");
+				System.out.println("Now you no longer have the funds required to adventure");
+				System.out.println("You lose!");
+				gameEnded = true;
+			}
 		}
 		else if (choice.equals("H") || choice.equals("h"))
 		{
 			currentTown.huntForTreasure();
-			// TODO: Check if all 3 unique treasures have been found
+			if (hunter.hasAllTreasures()) {
+				System.out.println();
+				System.out.println("You found all 3 treasures across the world!");
+				System.out.println("You win!");
+				gameEnded = true;
+			}
 		}
 		else if (choice.equals("X") || choice.equals("x"))
 		{
 			System.out.println("Fare thee well, " + hunter.getHunterName() + "!");
+			gameEnded = true;
 		}
 		else
 		{
