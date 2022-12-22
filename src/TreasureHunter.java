@@ -54,13 +54,16 @@ public class TreasureHunter
 		// set game mode
 		System.out.print("What difficulty would you like to play on? ([e]asy/[n]ormal/[h]ard): ");
 		while (gameMode.length() == 0) {
-			String mode = scanner.nextLine();
+			String mode = scanner.nextLine().toLowerCase();
 			if (mode.equals("easy") || mode.equals("e")) {
 				gameMode = "E";
 			} else if (mode.equals("normal") || mode.equals("n")) {
 				gameMode = "N";
 			} else if (mode.equals("hard") || mode.equals("h")) {
 				gameMode = "H";
+			} else if (mode.equals("cheat")) {
+				gameMode = "C";
+				hunter.setCheating(true);
 			} else {
 				System.out.print("Not a valid difficulty, please retry: ");
 			}
@@ -73,7 +76,7 @@ public class TreasureHunter
 	private void enterTown()
 	{
 		// normal mode default values
-		double markdown = 0.25;
+		double markdown = 0.5;
 		double toughness = 0.4;
 		double priceMod = 1;
 		double brawlWinChance = 0.5;
@@ -81,14 +84,14 @@ public class TreasureHunter
 
 		if (gameMode.equals("E")) {
 			// easy mode, lower buy value, higher resell value, and easier towns
-			markdown = 0.1;
+			markdown = 0.9;
 			toughness = 0.2;
 			priceMod = 0.5;
 			brawlWinChance = 0.75;
 			brawlGoldExtra = 5;
 		} else if (gameMode.equals("H")) {
 			// hard mode, higher buy value, lower resell value, and tougher towns
-			markdown = 0.5;
+			markdown = 0.25;
 			toughness = 0.75;
 		}
 

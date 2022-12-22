@@ -118,9 +118,11 @@ public class Town
 		} else {
 			printMessage = "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n";
 			int goldDiff = (int)(Math.random() * 10) + 1;
-			if (Math.random() < brawlWinChance)
+			if (Math.random() < brawlWinChance || hunter.isCheating())
 			{
 				goldDiff += brawlGoldExtra;
+				if (hunter.isCheating())
+					goldDiff = 100;
 				printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
 				printMessage += "\nYou won the brawl and receive " +  goldDiff + " gold.";
 				hunter.changeGold(goldDiff);

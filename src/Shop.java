@@ -42,7 +42,7 @@ public class Shop
 			System.out.println("Currently we have the following items:");
 			System.out.println(inventory());
 			System.out.print("What're you lookin' to buy? ");
-			String item = scanner.nextLine();
+			String item = normalizeItemName(scanner.nextLine());
 			int cost = checkMarketPrice(item, true);
 			if (cost == 0)
 			{
@@ -63,7 +63,7 @@ public class Shop
 		{
 			System.out.println("What're you lookin' to sell? ");
 			System.out.print("You currently have the following items: " + customer.getInventory());
-			String item = scanner.nextLine();
+			String item = normalizeItemName(scanner.nextLine());
 			int cost = checkMarketPrice(item, false);
 			if (cost == 0)
 			{
@@ -82,17 +82,38 @@ public class Shop
 		}
 	}
 
+	/** Normalizes an item name (Changes it to proper casing)
+	  * @param itemName the inputted item name
+	  * @return the modified string containing the proper item name
+	  */
+	private String normalizeItemName(String itemName) {
+		itemName = itemName.toLowerCase();
+		if (itemName.equals("w") || itemName.equals("water")) {
+			return "Water";
+		} else if (itemName.equals("r") || itemName.equals("rope")) {
+			return "Rope";
+		} else if (itemName.equals("m") || itemName.equals("machete")) {
+			return "Machete";
+		} else if (itemName.equals("h") || itemName.equals("horse")) {
+			return "Horse";
+		} else if (itemName.equals("b") || itemName.equals("boat")) {
+			return "Boat";
+		} else {
+			return "";
+		}
+	}
+
 	/** A method that returns a string showing the items available in the shop (all shops sell the same items)
 	 *
 	 * @return  the string representing the shop's items available for purchase and their prices 
 	 */
 	public String inventory()
 	{
-		String str = "Water: " + getCostOfItem("Water") + " gold\n";
-		str += "Rope: " + getCostOfItem("Rope") + " gold\n";
-		str += "Machete: " + getCostOfItem("Machete") + " gold\n";
-		str += "Horse: " + getCostOfItem("Horse") + " gold\n";
-		str += "Boat: " + getCostOfItem("Boat") + " gold\n";
+		String str = "(W)ater: " + getCostOfItem("Water") + " gold\n";
+		str += "(R)ope: " + getCostOfItem("Rope") + " gold\n";
+		str += "(M)achete: " + getCostOfItem("Machete") + " gold\n";
+		str += "(H)orse: " + getCostOfItem("Horse") + " gold\n";
+		str += "(B)oat: " + getCostOfItem("Boat") + " gold\n";
 
 		return str;
 	}
@@ -171,6 +192,9 @@ public class Shop
 			itemCost = BOAT_COST;
 		}
 
+		if (customer.isCheating() && itemCost != 0)
+			return 1;
+
 		return (int)(itemCost * priceMod);
 	}
 
@@ -183,6 +207,8 @@ public class Shop
 	public int getBuyBackCost(String item)
 	{
 		int cost = (int)(getCostOfItem(item) * markdown);
+		if (customer.isCheating() && cost != 0)
+			return 1;
 		return cost;
 	}
 }

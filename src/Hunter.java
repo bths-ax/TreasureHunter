@@ -12,6 +12,7 @@ public class Hunter
 	private String hunterName;
 	private String kit;
 	private int gold;
+	private boolean cheating;
 
 	//Constructor
 	/**
@@ -24,23 +25,17 @@ public class Hunter
 		this.hunterName = hunterName;
 		kit = "";
 		gold = startingGold;
+		cheating = false;
 	}
 
 	//Accessors
-	public String getHunterName()
-	{
-		return hunterName;
-	}
+	public String getHunterName() { return hunterName; }
+	public String getKit() { return kit; }
+	public int getGold() { return gold; }
+	public boolean isCheating() { return cheating; }
 
-	public String getKit()
-	{
-		return kit;
-	}
-
-	public int getGold()
-	{
-		return gold;
-	}
+	// Setters
+	public void setCheating(boolean newCheating) { cheating = newCheating; }
 
 	public void changeGold(int modifier)   
 	{
