@@ -12,7 +12,7 @@ public class TreasureHunter
 	//Instance variables
 	private Town currentTown;
 	private Hunter hunter;
-	private boolean hardMode;
+	private String gameMode;
 	private boolean gameEnded;
 
 	//Constructor
@@ -24,7 +24,7 @@ public class TreasureHunter
 		// these will be initialized in the play method
 		currentTown = null;
 		hunter = null;
-		hardMode = false;
+		gameMode = "";
 		gameEnded = false;
 	}
 
@@ -51,11 +51,19 @@ public class TreasureHunter
 		// set hunter instance variable
 		hunter = new Hunter(name, 10);
 
-		System.out.print("Hard mode? (y/n): ");
-		String hard = scanner.nextLine();
-		if (hard.equals("y") || hard.equals("Y"))
-		{
-			hardMode = true;
+		// set game mode
+		System.out.print("What difficulty would you like to play on? ([e]asy/[n]ormal/[h]ard): ");
+		while (gameMode.length() == 0) {
+			String mode = scanner.nextLine();
+			if (mode.equals("easy") || mode.equals("e")) {
+				gameMode = "E";
+			} else if (mode.equals("normal") || mode.equals("n")) {
+				gameMode = "N";
+			} else if (mode.equals("hard") || mode.equals("h")) {
+				gameMode = "H";
+			} else {
+				System.out.print("Not a valid difficulty, please retry: ");
+			}
 		}
 	}
 
@@ -64,26 +72,35 @@ public class TreasureHunter
 	 */
 	private void enterTown()
 	{
+		// normal mode default values
 		double markdown = 0.25;
 		double toughness = 0.4;
-		if (hardMode)
-		{
-			// in hard mode, you get less money back when you sell items
-			markdown = 0.5;
+		double priceMod = 1;
+		double brawlWinChance = 0.5;
+		double brawlGoldExtra = 0;
 
-			// and the town is "tougher"
+		if (gameMode.equals("E")) {
+			// easy mode, lower buy value, higher resell value, and easier towns
+			markdown = 0.1;
+			toughness = 0.2;
+			priceMod = 0.5;
+			brawlWinChance = 0.75;
+			brawlGoldExtra = 5;
+		} else if (gameMode.equals("H")) {
+			// hard mode, higher buy value, lower resell value, and tougher towns
+			markdown = 0.5;
 			toughness = 0.75;
 		}
 
 		// note that we don't need to access the Shop object
 		// outside of this method, so it isn't necessary to store it as an instance
 		// variable; we can leave it as a local variable
-		Shop shop = new Shop(markdown);
+		Shop shop = new Shop(markdown, priceMod);
 
 		// creating the new Town -- which we need to store as an instance
 		// variable in this class, since we need to access the Town
 		// object in other methods of this class
-		currentTown = new Town(shop, toughness);
+		currentTown = new Town(shop, toughness, brawlWinChance, brawlGoldExtra);
 
 		// calling the hunterArrives method, which takes the Hunter
 		// as a parameter; note this also could have been done in the

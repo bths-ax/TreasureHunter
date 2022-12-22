@@ -16,11 +16,13 @@ public class Shop
 
 	// instance variables
 	private double markdown;
+	private double priceMod;
 	private Hunter customer;
 
 	//Constructor
-	public Shop(double markdown)
+	public Shop(double markdown, double priceMod)
 	{
+		this.priceMod = priceMod;
 		this.markdown = markdown;
 		customer = null;
 	}
@@ -86,11 +88,11 @@ public class Shop
 	 */
 	public String inventory()
 	{
-		String str = "Water: " + WATER_COST + " gold\n";
-		str += "Rope: " + ROPE_COST + " gold\n";
-		str += "Machete: " + MACHETE_COST + " gold\n";
-		str += "Horse: " + HORSE_COST + " gold\n";
-		str += "Boat: " + BOAT_COST + " gold\n";
+		String str = "Water: " + getCostOfItem("Water") + " gold\n";
+		str += "Rope: " + getCostOfItem("Rope") + " gold\n";
+		str += "Machete: " + getCostOfItem("Machete") + " gold\n";
+		str += "Horse: " + getCostOfItem("Horse") + " gold\n";
+		str += "Boat: " + getCostOfItem("Boat") + " gold\n";
 
 		return str;
 	}
@@ -148,33 +150,28 @@ public class Shop
 	}
 
 	/**
-	 * Checks the item entered against the costs listed in the static variables.
+	 * Checks the item entered against the costs listed in the static variables,
+	 * and multiplies it by the price modifier
 	 * 
 	 * @param item The item being checked for cost.
 	 * @return The cost of the item or 0 if the item is not found.
 	 */
 	public int getCostOfItem(String item)
 	{
-		// lol nice one
+		int itemCost = 0;
 		if (item.equals("Water")) {
-			return WATER_COST;
+			itemCost = WATER_COST;
+		} else if (item.equals("Rope")) {
+			itemCost = ROPE_COST;
+		} else if (item.equals("Machete")) {
+			itemCost = MACHETE_COST;
+		} else if (item.equals("Horse")) {
+			itemCost = HORSE_COST;
+		} else if (item.equals("Boat")) {
+			itemCost = BOAT_COST;
 		}
-		else if (item.equals("Rope")) {
-			return ROPE_COST;
-		}
-		else if (item.equals("Machete")) {
-			return MACHETE_COST;
-		}    
-		else if (item.equals("Horse")) {
-			return HORSE_COST;
-		}
-		else if (item.equals("Boat")) {
-			return BOAT_COST;
-		}
-		else
-		{        
-			return 0;
-		}
+
+		return (int)(itemCost * priceMod);
 	}
 
 	/**
