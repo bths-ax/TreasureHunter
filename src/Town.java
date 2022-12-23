@@ -99,6 +99,41 @@ public class Town
 		shop.enter(hunter, choice);
 	}
 
+	// Health bar animation methods
+	private String visualizeHpBar(int width, String color, int hp, int maxHp) {
+		int fillAmt = (int)Math.ceil((double)hp / maxHp * width);
+		int emptAmt = width - fillAmt;
+
+		String fill = "";
+		for (int i = 0; i < fillAmt; i++)
+			fill += "|";
+		for (int i = 0; i < emptAmt; i++)
+			fill += " ";
+		return "[" + fill + "]"; // TODO: add colors
+	}
+
+	private void flashHpBars(int ownHp, int oppHp, int maxHp) throws InterruptedException {
+		// TODO: this lol
+	}
+
+	private void animateHpBars(int width, boolean winner) {
+		int ownHp = 100;
+		int oppHp = 100;
+
+		while (true) {
+			int ownDmg = 15 + (int)(Math.random() * 6 + 1);
+			int oppDmg = 15 - (int)(Math.random() * 6);
+			if (!winner) {
+				int swapTmp = ownDmg;
+				ownDmg = oppDmg;
+				oppDmg = swapTmp;
+			}
+
+			// TODO: waits, own attacks opp, checks
+			// TODO: waits, opp attacks own, checks
+		}
+	}
+
 	/**
 	 * Gives the hunter a chance to fight for some gold.<p>
 	 * The chances of finding a fight and winning the gold are based on the toughness of the town.<p>
@@ -123,12 +158,14 @@ public class Town
 				goldDiff += brawlGoldExtra;
 				if (hunter.isCheating())
 					goldDiff = 100;
+				// TODO: animate health bars for a winning battle
 				printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
 				printMessage += "\nYou won the brawl and receive " +  goldDiff + " gold.";
 				hunter.changeGold(goldDiff);
 			}
 			else
 			{
+				// TODO: animate health bars for a losing battle
 				printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
 				printMessage += "\nYou lost the brawl and pay " +  goldDiff + " gold.";
 				hunter.changeGold(-1 * goldDiff);
