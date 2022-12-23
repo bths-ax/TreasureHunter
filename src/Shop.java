@@ -11,6 +11,7 @@ public class Shop
 	private static final int WATER_COST = 2;
 	private static final int ROPE_COST = 4;
 	private static final int MACHETE_COST = 6;
+	private static final int LANTERN_COST = 10;
 	private static final int HORSE_COST = 12;
 	private static final int BOAT_COST = 20;
 
@@ -98,6 +99,8 @@ public class Shop
 			return "Horse";
 		} else if (itemName.equals("b") || itemName.equals("boat")) {
 			return "Boat";
+		} else if (itemName.equals("l") || itemName.equals("lantern")) {
+			return "Lantern";
 		} else {
 			return "";
 		}
@@ -112,6 +115,7 @@ public class Shop
 		String str = "(W)ater: " + getCostOfItem("Water") + " gold\n";
 		str += "(R)ope: " + getCostOfItem("Rope") + " gold\n";
 		str += "(M)achete: " + getCostOfItem("Machete") + " gold\n";
+		str += "(L)antern: " + getCostOfItem("Lantern") + " gold\n";
 		str += "(H)orse: " + getCostOfItem("Horse") + " gold\n";
 		str += "(B)oat: " + getCostOfItem("Boat") + " gold\n";
 
@@ -190,6 +194,8 @@ public class Shop
 			itemCost = HORSE_COST;
 		} else if (item.equals("Boat")) {
 			itemCost = BOAT_COST;
+		} else if (item.equals("Lantern")) {
+			itemCost = LANTERN_COST;
 		}
 
 		if (customer.isCheating() && itemCost != 0)
