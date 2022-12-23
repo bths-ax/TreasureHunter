@@ -63,7 +63,6 @@ public class TreasureHunter
 				this.gameMode = "H";
 			} else if (mode.equals("cheat")) {
 				this.gameMode = "C";
-				hunter.setCheating(true);
 			} else {
 				System.out.print("Not a valid difficulty, please retry: ");
 			}
@@ -97,6 +96,8 @@ public class TreasureHunter
 			// hard mode, higher buy value, lower resell value, and tougher towns
 			markdown = 0.25;
 			toughness = 0.75;
+		} else if (gameMode.equals("C")) {
+			hunter.setCheating(true);
 		}
 
 		// note that we don't need to access the Shop object
