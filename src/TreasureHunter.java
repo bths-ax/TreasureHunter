@@ -48,26 +48,30 @@ public class TreasureHunter
 		System.out.print("What's your name, Hunter? ");
 		String name = scanner.nextLine();
 
-		// set hunter instance variable
-		hunter = new Hunter(name, 10);
+		int startingGold = 10;
 
 		// set game mode
 		System.out.print("What difficulty would you like to play on? ([e]asy/[n]ormal/[h]ard): ");
-		while (gameMode.length() == 0) {
+		while (this.gameMode.length() == 0) {
 			String mode = scanner.nextLine().toLowerCase();
 			if (mode.equals("easy") || mode.equals("e")) {
-				gameMode = "E";
+				this.gameMode = "E";
+				startingGold = 15;
 			} else if (mode.equals("normal") || mode.equals("n")) {
-				gameMode = "N";
+				this.gameMode = "N";
 			} else if (mode.equals("hard") || mode.equals("h")) {
-				gameMode = "H";
+				this.gameMode = "H";
 			} else if (mode.equals("cheat")) {
-				gameMode = "C";
+				this.gameMode = "C";
 				hunter.setCheating(true);
 			} else {
 				System.out.print("Not a valid difficulty, please retry: ");
 			}
 		}
+
+		// set other instance variables
+		this.hunter = new Hunter(name, startingGold);
+		this.gameEnded = false;
 	}
 
 	/**
