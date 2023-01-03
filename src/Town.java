@@ -100,7 +100,7 @@ public class Town
 	}
 
 	// Health bar animation methods
-	private String visualizeHpBar(int width, String color, int hp, int maxHp) {
+	private String visualizeHpBar(int width, int hp, int maxHp) {
 		int fillAmt = (int)Math.ceil((double)hp / maxHp * width);
 		int emptAmt = width - fillAmt;
 
@@ -109,29 +109,66 @@ public class Town
 			fill += "|";
 		for (int i = 0; i < emptAmt; i++)
 			fill += " ";
-		return "[" + fill + "]"; // TODO: add colors
-	}
-
-	private void flashHpBars(int ownHp, int oppHp, int maxHp) throws InterruptedException {
-		// TODO: this lol
+		return String.format("<[%s] %d/%d>", fill, hp, maxHp);
 	}
 
 	private void animateHpBars(int width, boolean winner) {
-		int ownHp = 100;
-		int oppHp = 100;
+		int maxHp = 100;
+		int ownHp = maxHp;
+		int oppHp = maxHp;
 
-		while (true) {
-			int ownDmg = 15 + (int)(Math.random() * 6 + 1);
-			int oppDmg = 15 - (int)(Math.random() * 6);
-			if (!winner) {
-				int swapTmp = ownDmg;
-				ownDmg = oppDmg;
-				oppDmg = swapTmp;
+		try {
+			while (true) {
+				// Generate damage amounts (winner always deals more damage)
+				int oppDmg = 15 + (int)((Math.random() - 0.5) * 10);
+				int ownDmg = oppDmg + (int)(Math.random() * 5 + 1);
+				if (!winner) {
+					int swapTmp = ownDmg;
+					ownDmg = oppDmg;
+					oppDmg = swapTmp;
+				}
+
+				// Since the Hunter always attacks first, make sure they don't
+				// defeat the opponent if they are supposed to lose
+				if (!winner && oppHp - ownDmg <= 0) {
+					ownDmg = oppHp - (int)(Math.random() * 5 + 1);
+				}
+
+				// Make sure damage amounts don't exceed the remaining health
+				// of the target
+				ownDmg = Math.min(ownDmg, oppHp);
+				oppDmg = Math.min(oppDmg, ownHp);
+
+				// Hunter attacks opponent
+				Thread.sleep(750);
+
+				oppHp -= ownDmg;
+
+				System.out.print("\n".repeat(100)); // scuffed screen clear
+				System.out.println("You      " + visualizeHpBar(width, ownHp, maxHp));
+				System.out.println("Opponent " + visualizeHpBar(width, oppHp, maxHp) + " -" + ownDmg);
+
+				if (oppHp <= 0) break;
+
+				// Opponent attacks Hunter
+				Thread.sleep(750);
+
+				ownHp -= oppDmg;
+
+				System.out.print("\n".repeat(100)); // scuffed screen clear
+				System.out.println("You      " + visualizeHpBar(width, ownHp, maxHp) + " -" + oppDmg);
+				System.out.println("Opponent " + visualizeHpBar(width, oppHp, maxHp));
+
+				if (ownHp <= 0) break;
 			}
 
-			// TODO: waits, own attacks opp, checks
-			// TODO: waits, opp attacks own, checks
-		}
+			// Print battle results
+			Thread.sleep(750);
+			System.out.print("\n".repeat(100)); // scuffed screen clear
+			if (winner) System.out.println("You won!");
+			else System.out.println("You lost!");
+			System.out.println();
+		} catch (InterruptedException _e) {}
 	}
 
 	/**
@@ -151,21 +188,21 @@ public class Town
 		if (Math.random() > noTroubleChance) {
 			printMessage = "You couldn't find any trouble";
 		} else {
-			printMessage = "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n";
+			printMessage = "";
 			int goldDiff = (int)(Math.random() * 10) + 1;
 			if (Math.random() < brawlWinChance || hunter.isCheating())
 			{
 				goldDiff += brawlGoldExtra;
 				if (hunter.isCheating())
 					goldDiff = 100;
-				// TODO: animate health bars for a winning battle
+				animateHpBars(50, true);
 				printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
 				printMessage += "\nYou won the brawl and receive " +  goldDiff + " gold.";
 				hunter.changeGold(goldDiff);
 			}
 			else
 			{
-				// TODO: animate health bars for a losing battle
+				animateHpBars(50, false);
 				printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
 				printMessage += "\nYou lost the brawl and pay " +  goldDiff + " gold.";
 				hunter.changeGold(-1 * goldDiff);
