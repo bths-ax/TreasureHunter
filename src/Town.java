@@ -216,23 +216,28 @@ public class Town
 	 */
 	public void huntForTreasure() {
 		if (treasureFound) {
-			System.out.println("You already found the treasure in this town, so there is no need to continue hunting here");
-			System.out.println("It might be time to move to a new town");
+			printMessage = "You already found the treasure in this town, so there is no need to continue hunting here\n";
+			printMessage += "It might be time to move to a new town";
+			//System.out.println("You already found the treasure in this town, so there is no need to continue hunting here");
+			//System.out.println("It might be time to move to a new town");
 			return;
 		}
 
 		if (Math.random() >= 0.5) { // Treasure found
-			System.out.println("You found a " + treasure + "!");
+			//System.out.println("You found a " + treasure + "!");
+			printMessage = "You found a " + treasure + "!";
 
 			if (hunter.hasItemInKit(treasure)) {
 				// Hunter already found this treasure; cannot find same one twice
-				System.out.println("Too bad you already had one though, and because you are suuuch a good person you put it back down and left it for someone else to find.");
+				//System.out.println("Too bad you already had one though, and because you are suuuch a good person you put it back down and left it for someone else to find.");
+				printMessage += "Too bad you already had one though, and because you are suuuch a good person you put it back down and left it for someone else to find.";
 			} else {
 				hunter.addItem(treasure);
 				treasureFound = true;
 			}
 		} else { // Nothing found
-			System.out.println("You couldn't find any treasure.");
+			//System.out.println("You couldn't find any treasure.");
+			printMessage = "You couldn't find any treasure.";
 		}
 	}
 
